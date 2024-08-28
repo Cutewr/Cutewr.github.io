@@ -1,5 +1,5 @@
 ---
-cover: /assets/images/cover2.jpg
+# cover: /assets/images/cover2.jpg
 icon: pen-to-square
 date: 2022-01-12
 category:
@@ -8,7 +8,7 @@ tag:
   - 红
   - 圆
 star: true
-sticky: true
+# sticky: true
 ---
 
 # 番茄

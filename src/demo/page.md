@@ -2,7 +2,7 @@
 # 这是文章的标题
 title: 页面配置
 # 你可以自定义封面图片
-cover: /assets/images/cover1.jpg
+# cover: /assets/images/cover1.jpg
 # 这是页面的图标
 icon: file
 # 这是侧边栏的顺序
@@ -19,7 +19,7 @@ tag:
   - 页面配置
   - 使用指南
 # 此页面会在文章列表置顶
-sticky: true
+# sticky: true
 # 此页面会出现在星标文章中
 star: true
 # 你可以自定义页脚
@@ -58,6 +58,7 @@ title: 页面标题
 ## 页面内容
 
 你可以自由在这里书写你的 Markdown。
+
 
 ::: tip 图片引入
 
