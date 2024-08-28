@@ -48,11 +48,11 @@ VuePress 会使用 [markdown-it](https://github.com/markdown-it/markdown-it) 来
 
 @tab apple
 
-Apple
+apple
 
-@tab banana
+@tab java
 
-Banana
+Java
 
 @tab orange
 
