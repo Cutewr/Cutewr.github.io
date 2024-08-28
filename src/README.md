@@ -3,25 +3,17 @@ home: true
 layout: BlogHome
 icon: home
 title: Cutewr's Blog
-heroImage: https://theme-hope-assets.vuejs.press/logo.svg
+# heroImage: assets/icon/logo.png
 heroText: Cutewr's Blog
+bgImage: assets/images/background.png
 heroFullScreen: false
 tagline: We go where we go.
 projects:
   - icon: project
-    name: 项目名称
-    desc: 项目详细描述
-    link: https://你的项目链接
+    name: MyRPC
+    desc: 手动实现的RPC框架
+    link: https://github.com/Cutewr/MyRPC
 
-  - icon: link
-    name: 链接名称
-    desc: 链接详细描述
-    link: https://链接地址
-
-  - icon: book
-    name: 书籍名称
-    desc: 书籍详细描述
-    link: https://你的书籍链接
 
   - icon: article
     name: 文章名称
