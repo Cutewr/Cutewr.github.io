@@ -5,7 +5,8 @@ icon: home
 title: Cutewr's Blog
 # heroImage: assets/icon/logo.png
 heroText: Cutewr's Blog
-bgImage: assets/images/background.png
+bgImage: assets/images/bglight.png
+bgImageDark: assets/images/bgdark.png
 heroFullScreen: false
 tagline: We go where we go.
 projects:
