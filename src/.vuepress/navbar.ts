@@ -4,6 +4,30 @@ export default navbar([
   "/",
   "/demo/",
   {
+    text: "Java",
+    icon: "book",
+    link: "https://theme-hope.vuejs.press/zh/",
+  },
+  {
+    text: "刷题笔记",
+    icon: "book",
+    link: "https://theme-hope.vuejs.press/zh/",
+  },
+  {
+    text: "计算机基础",
+    icon: "book",
+    children: [
+      {
+        text: "苹果",
+        icon: "pen-to-square",
+        prefix: "apple/",
+        children: [
+          { text: "苹果1", icon: "pen-to-square", link: "1" },
+          { text: "苹果2", icon: "pen-to-square", link: "2" },
+        ],
+      }]
+  },
+  {
     text: "博文",
     icon: "pen-to-square",
     prefix: "/posts/",

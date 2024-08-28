@@ -2,11 +2,11 @@
 home: true
 layout: BlogHome
 icon: home
-title: 博客主页
+title: Cutewr's Blog
 heroImage: https://theme-hope-assets.vuejs.press/logo.svg
-heroText: 你博客的名称
-heroFullScreen: true
-tagline: 你可以在这里放置你的口号与标语
+heroText: Cutewr's Blog
+heroFullScreen: false
+tagline: We go where we go.
 projects:
   - icon: project
     name: 项目名称
