@@ -3,6 +3,7 @@ import { navbar } from "vuepress-theme-hope";
 export default navbar([
   "/",
   "/demo/",
+  
   "/SpringBoot/",
   {
     text: "Java",
@@ -134,17 +135,7 @@ export default navbar([
       },
     ],
   },
-  {
-    text: "其他博文",
-    prefix: "/other/",
-    children: [
-      {
-        text: "Github+picGo搭建图床",
-        link: "Github+picGo搭建图床",
-      },
-
-    ],
-  },
+  "/其他博客/"
   // {
   //   text: "V2 文档",
   //   icon: "book",

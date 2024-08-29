@@ -1,5 +1,4 @@
 ---
-icon: pen-to-square
 date: 2024-08-28
 category:
   - Java

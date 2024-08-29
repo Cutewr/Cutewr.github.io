@@ -40,10 +40,19 @@ export default sidebar({
       expanded: true,
       collapsible: true,
       text: "SpringBoot系列",
-      icon: "book",
       children: "structure", // 自动生成子项结构
     }
   ],
+
+    // 配置 "posts/java" 路径下的侧边栏
+    "/其他博客/": [
+      {
+        expanded: true,
+        collapsible: true,
+        text: "其他博客",
+        children: "structure", // 自动生成子项结构
+      }
+    ],
 
   // 配置 "posts/java" 路径下的侧边栏
   "/posts/Java/": [

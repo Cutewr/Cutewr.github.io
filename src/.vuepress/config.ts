@@ -44,6 +44,23 @@ export default defineUserConfig({
             rel: "stylesheet",
           },
         ],
+
+    [
+      "link",
+      {
+        href: "https://chinese-fonts-cdn.deno.dev/packages/cqscbbt/dist/YunFengZiKuZhongQingShanChengBangBangTi-2/result.css",
+        rel: "stylesheet",
+      },
+    ],
+
+    [
+      "link",
+      {
+        href: "https://chinese-fonts-cdn.deno.dev/packages/yozai/dist/Yozai-Medium/result.css",
+        rel: "stylesheet",
+      },
+    ],
+
   ],
 
 });
