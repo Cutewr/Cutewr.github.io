@@ -3,6 +3,7 @@ import { navbar } from "vuepress-theme-hope";
 export default navbar([
   "/",
   "/demo/",
+  "/SpringBoot/",
   {
     text: "Java",
     prefix: "posts/Java/",

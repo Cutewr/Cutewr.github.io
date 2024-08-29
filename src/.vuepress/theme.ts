@@ -31,7 +31,7 @@ export default hopeTheme({
 
   // 博客相关
   blog: {
-    description: "Javaer",
+    description: "To be a better Javaer",
     intro: "/intro.html",
     medias: {
       QQ: "https://github.com/Cutewr/blogimage/blob/main/img/QQ_qrcode.jpg",
