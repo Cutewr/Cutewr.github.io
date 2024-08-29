@@ -54,62 +54,64 @@ export default navbar([
         text: "多路归并",
         link: "K-wayMerge",
       },
-    ],
-  },
-  {
-    text: "MySQL",
-    prefix: "posts/MySQL/",
-    children: [
       {
-        text: "MySQL基础",
-        link: "1basic"
-      },
-      {
-        text: "MySQL索引",
-        link: "2index",
-      },
-      {
-        text: "MySQL日志",
-        link: "3log"
-      },
-      {
-        text: "MySQL事务",
-        link: "4transaction",
+        text: "排序算法",
+        prefix: "Sort/",
+        children: [
+          {text: "快速排序的基准选取及优化",link: "快速排序的基准选取及优化"},
+          {text: "排序算法总结",link: "排序算法总结",},
+          {text: "MySQL日志",link: "3log"},
+          {text: "MySQL事务",link: "4transaction",},
+        ],
       },
     ],
   },
   {
-    text: "非关系型数据库",
+    text: "数据库",
+    prefix: "DataBase/",
     children: [
       {
-        text: "矩阵【二维数组】",
-        icon: "pen-to-square",
-        link: "1"
+        text: "MySQL",
+        prefix: "MySQL/",
+        children: [
+          {text: "MySQL基础",link: "1basic"},
+          {text: "MySQL索引",link: "2index",},
+          {text: "MySQL日志",link: "3log"},
+          {text: "MySQL事务",link: "4transaction",},
+        ],
       },
       {
-        text: "香蕉 2",
-        icon: "pen-to-square",
-        link: "2",
+        text: "Redis",
+        prefix: "Redis/",
+        children: [
+          { text: "Redis基础", link: "1" },
+          { text: "Redis线程模型", link: "2" },
+          { text: "Redis持久化", link: "2" },
+          { text: "Redis生产问题", link: "2" },
+        ],
       },
-    ],
+      {text: "MongoDB",link: "MongoDB"},
+    ]
   },
   {
     text: "计算机基础",
+    prefix: "408/",
     children: [
       {
         text: "计算机网络",
-        prefix: "apple/",
+        prefix: "ComputerNetwork/",
         children: [
-          { text: "苹果1",  link: "1" },
-          { text: "苹果2",  link: "2" },
+          { text: "计算机网络分层模型",  link: "Part" },
+          { text: "计算机网络各层协议",  link: "protocol" },
         ],
       },
       {
         text: "操作系统",
-        prefix: "Java/",
+        prefix: "OS/",
         children: [
-          { text: "进程管理", link: "1" },
-          { text: "苹果2", link: "2" },
+          { text: "进程管理", link: "process" },
+          { text: "内存管理", link: "memory" },
+          { text: "文件管理", link: "file" },
         ],
       }
     ]

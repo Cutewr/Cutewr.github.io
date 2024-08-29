@@ -63,6 +63,16 @@ export default hopeTheme({
 
   // 在这里配置主题提供的插件
   plugins: {
+    comment: {
+      // 选择一个评论服务
+      provider: "Giscus",
+      repo: "Cutewr/Cutewr.github.io",
+      repoId: "R_kgDOMpQXzA",
+      category: "Announcements",
+      categoryId: "DIC_kwDOMpQXzM4CiCdN",
+      mapping: "pathname"
+    },
+    
     blog: true,
 
     // 启用之前需安装 @waline/client

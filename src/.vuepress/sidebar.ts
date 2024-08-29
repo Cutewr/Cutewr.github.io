@@ -3,8 +3,42 @@ import { sidebar } from "vuepress-theme-hope";
 export default sidebar({
 
   // 配置 "posts/java" 路径下的侧边栏
+  "/408/": [
+    {
+      text: "计算机基础",
+      icon: "book",
+      children: [
+        {
+          expanded: true,
+          collapsible: true,
+          text: "计算机网络",
+          prefix: "ComputerNetwork/",
+          children: [
+            { text: "计算机网络分层模型",  link: "Part" },
+            { text: "计算机网络各层协议",  link: "protocol" },
+          ],
+        },
+        {
+          expanded: true,
+          collapsible: true,
+          text: "操作系统",
+          prefix: "OS/",
+          children: [
+            { text: "进程管理", link: "process" },
+            { text: "内存管理", link: "memory" },
+            { text: "文件管理", link: "file" },
+          ],
+        }
+      ]
+    }
+  ],
+
+
+  // 配置 "posts/java" 路径下的侧边栏
   "/SpringBoot/": [
     {
+      expanded: true,
+      collapsible: true,
       text: "SpringBoot系列",
       icon: "book",
       children: "structure", // 自动生成子项结构
@@ -14,8 +48,9 @@ export default sidebar({
   // 配置 "posts/java" 路径下的侧边栏
   "/posts/Java/": [
     {
+      expanded: true,
+      collapsible: true,
       text: "Java",
-      icon: "book",
       children: "structure", // 自动生成子项结构
     }
   ],
@@ -23,8 +58,9 @@ export default sidebar({
     // 配置 "posts/interview" 路径下的侧边栏
     "/posts/interview/": [
       {
+        expanded: true,
+        collapsible: true,
         text: "面试复盘",
-        icon: "book",
         children: "structure", // 自动生成子项结构
       }
     ],
@@ -32,16 +68,38 @@ export default sidebar({
     // 配置 "posts/interview" 路径下的侧边栏
     "/posts/LCNotes/": [
       {
+        expanded: true,
+        collapsible: true,
         text: "刷题笔记",
         icon: "book",
+        children: [
+          "1array.md",
+          "matrix.md",
+          "3hash.md",
+          "4linkedlist.md",
+          "5stack.md",
+          "6double.md",
+          "7tree.md",
+          "8graph.md",
+          "K-wayMerge.md"
+        ]
+      },
+      {
+        expanded: true,
+        collapsible: true,
+        prefix: "Sort/",
+        text: "排序算法",
+        icon: "book",
         children: "structure", // 自动生成子项结构
-      }
+      },
     ],
 
     // 配置 "posts/interview" 路径下的侧边栏
-    "/posts/MySQL/": [
+    "/DataBase/": [
       {
-        text: "MySQL",
+        expanded: true,
+        collapsible: true,
+        text: "数据库",
         icon: "book",
         children: "structure", // 自动生成子项结构
       }
