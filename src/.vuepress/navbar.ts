@@ -49,6 +49,10 @@ export default navbar([
         text: "图",
         link: "8graph",
       },
+      {
+        text: "多路归并",
+        link: "K-wayMerge",
+      },
     ],
   },
   {
@@ -129,9 +133,14 @@ export default navbar([
   },
   {
     text: "其他博文",
-    icon: "pen-to-square",
-    prefix: "/posts/",
-    children: [],
+    prefix: "/other/",
+    children: [
+      {
+        text: "Github+picGo搭建图床",
+        link: "Github+picGo搭建图床",
+      },
+
+    ],
   },
   // {
   //   text: "V2 文档",
