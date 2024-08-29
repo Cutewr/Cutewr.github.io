@@ -15,7 +15,7 @@ export default hopeTheme({
 
   logo: "assets/icon/logo_round.png",
 
-  repo: "vuepress-theme-hope/vuepress-theme-hope",
+  repo: "Cutewr",
 
   docsDir: "src",
 
@@ -49,6 +49,7 @@ export default hopeTheme({
   encrypt: {
     config: {
       "/demo/encrypt.html": ["1234"],
+      "/posts/interview/": ["wr66"],
     },
   },
 

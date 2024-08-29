@@ -5,50 +5,76 @@ export default navbar([
   "/demo/",
   {
     text: "Java",
-    icon: "book",
     prefix: "posts/Java/",
     children: [
-      { text: "Java基础", icon: "pen-to-square", link: "JavaBasic" },
-      { text: "Java集合", icon: "pen-to-square", link: "JavaCollection" },
-      { text: "Java并发编程", icon: "pen-to-square", link: "JUC" },
-      { text: "Java虚拟机", icon: "pen-to-square", link: "JVM" },
+      { text: "Java基础", link: "JavaBasic" },
+      { text: "Java集合", link: "JavaCollection" },
+      { text: "Java并发编程", link: "JUC" },
+      { text: "Java虚拟机", link: "JVM" },
     ],
   },
   {
     text: "刷题笔记",
-    icon: "book",
+    prefix: "posts/LCNotes/",
     children: [
       {
-        text: "矩阵【二维数组】",
-        icon: "pen-to-square",
-        link: "1"
+        text: "数组",
+        link: "1array",
       },
       {
-        text: "香蕉 2",
-        icon: "pen-to-square",
-        link: "2",
+        text: "矩阵【二维数组】",
+        link: "matrix"
+      },
+      {
+        text: "哈希表",
+        link: "3hash"
+      },
+      {
+        text: "链表",
+        link: "4linkedlist",
+      },
+      {
+        text: "栈和队列",
+        link: "5stack"
+      },
+      {
+        text: "双指针",
+        link: "6double",
+      },
+      {
+        text: "树",
+        link: "7tree"
+      },
+      {
+        text: "图",
+        link: "8graph",
       },
     ],
   },
   {
     text: "MySQL",
-    icon: "book",
+    prefix: "posts/MySQL/",
     children: [
       {
-        text: "矩阵【二维数组】",
-        icon: "pen-to-square",
-        link: "1"
+        text: "MySQL基础",
+        link: "1basic"
       },
       {
-        text: "香蕉 2",
-        icon: "pen-to-square",
-        link: "2",
+        text: "MySQL索引",
+        link: "2index",
+      },
+      {
+        text: "MySQL日志",
+        link: "3log"
+      },
+      {
+        text: "MySQL事务",
+        link: "4transaction",
       },
     ],
   },
   {
     text: "非关系型数据库",
-    icon: "book",
     children: [
       {
         text: "矩阵【二维数组】",
@@ -64,68 +90,52 @@ export default navbar([
   },
   {
     text: "计算机基础",
-    icon: "book",
     children: [
       {
         text: "计算机网络",
-        icon: "pen-to-square",
         prefix: "apple/",
         children: [
-          { text: "苹果1", icon: "pen-to-square", link: "1" },
-          { text: "苹果2", icon: "pen-to-square", link: "2" },
+          { text: "苹果1",  link: "1" },
+          { text: "苹果2",  link: "2" },
         ],
       },
       {
         text: "操作系统",
-        icon: "pen-to-square",
         prefix: "Java/",
         children: [
-          { text: "进程管理", icon: "pen-to-square", link: "1" },
-          { text: "苹果2", icon: "pen-to-square", link: "2" },
+          { text: "进程管理", link: "1" },
+          { text: "苹果2", link: "2" },
         ],
       }
     ]
   },
   {
-    text: "其他博文",
-    icon: "pen-to-square",
-    prefix: "/posts/",
+    text: "面试复盘",
+    prefix: "posts/interview/",
     children: [
       {
-        text: "刷题笔记",
-        icon: "pen-to-square",
-        prefix: "apple/",
-        children: [
-          { text: "苹果1", icon: "pen-to-square", link: "1" },
-          { text: "苹果2", icon: "pen-to-square", link: "2" },
-        ],
+        text: "八股问答",
+        link: "knows"
       },
       {
-        text: "Java知识",
-        icon: "pen-to-square",
-        prefix: "java/",
-        children: [
-          {
-            text: "香蕉 1",
-            icon: "pen-to-square",
-            link: "1",
-          },
-          {
-            text: "香蕉 2",
-            icon: "pen-to-square",
-            link: "2",
-          },
-        ],
+        text: "项目问答",
+        link: "project",
       },
-      { text: "樱桃", icon: "pen-to-square", link: "cherry" },
-      { text: "火龙果", icon: "pen-to-square", link: "dragonfruit" },
-      "tomato",
-      "strawberry",
+      {
+        text: "算法题",
+        link: "algorithm",
+      },
     ],
   },
   {
-    text: "V2 文档",
-    icon: "book",
-    link: "https://theme-hope.vuejs.press/zh/",
+    text: "其他博文",
+    icon: "pen-to-square",
+    prefix: "/posts/",
+    children: [],
   },
+  // {
+  //   text: "V2 文档",
+  //   icon: "book",
+  //   link: "https://theme-hope.vuejs.press/zh/",
+  // },
 ]);

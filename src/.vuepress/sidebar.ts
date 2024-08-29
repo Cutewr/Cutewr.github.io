@@ -4,11 +4,38 @@ export default sidebar({
   // 配置 "posts/java" 路径下的侧边栏
   "/posts/Java/": [
     {
-      text: "文章",
+      text: "Java",
       icon: "book",
       children: "structure", // 自动生成子项结构
     }
   ],
+
+    // 配置 "posts/interview" 路径下的侧边栏
+    "/posts/interview/": [
+      {
+        text: "面试复盘",
+        icon: "book",
+        children: "structure", // 自动生成子项结构
+      }
+    ],
+
+    // 配置 "posts/interview" 路径下的侧边栏
+    "/posts/LCNotes/": [
+      {
+        text: "刷题笔记",
+        icon: "book",
+        children: "structure", // 自动生成子项结构
+      }
+    ],
+
+    // 配置 "posts/interview" 路径下的侧边栏
+    "/posts/MySQL/": [
+      {
+        text: "MySQL",
+        icon: "book",
+        children: "structure", // 自动生成子项结构
+      }
+    ],
 
   // 配置根路径 "/" 的侧边栏
   "/": [
