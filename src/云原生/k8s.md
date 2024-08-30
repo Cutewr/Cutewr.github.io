@@ -10,11 +10,11 @@ tag:
 你是一个程序员，你用代码写了一个博客应用服务，并将它部署在了云平台上。
 但应用服务太过受欢迎，访问量太大，经常会挂。
 
-![img](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421004186.jpeg)
+![](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421004186.jpeg)
 
 所以你用了一些工具自动重启挂掉的应用服务，并且将应用服务部署在了好几个服务器上，总算扛住了。
 
-![image-20240829175746893](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240829175746893.png)
+![](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240829175746893.png)
 后来你又上线了商城应用服务和语音应用服务，随着**应用服务变多**，需求也千奇百怪。有的应用服务不希望被外网访问到，有的部署的时候要求内存得大于 xxGB 才能正常跑。
 你每次都需要登录到各个服务器上，执行**手动**操作更新。不仅容易出错，还贼**浪费时间**。
 
@@ -24,7 +24,7 @@ tag:
 当然有，**没有什么是加一个中间层不能解决的，如果有，那就再加一层**。
 这次我们要加的中间层，叫 **Kubernetes**。
 
-![Kubernetes的位置](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240829175703251.png)Kubernetes的位置
+![Kubernetes的位置](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240829175703251.png)
 
 ## Kubernetes 是什么？
 
@@ -35,7 +35,7 @@ Kubernetes，它是 **G 家**开源的神器，因为单词太长，所以我们
 
 听起来有些厉害，它是怎么实现这些功能的呢？
 
-## [Kubernetes 架构原理](https://golangguide.top/架构/云原生/核心知识点/k8s到底是什么.html#kubernetes-架构原理)
+## Kubernetes 架构原理
 
 为了实现上面的功能，Kubernetes 会将我们的服务器划为两部分，一部分叫**控制平面**（control plane，以前叫 master），另一部分叫**工作节点**，也就是 **Node**。
 简单来说它们的关系就是老板和打工人， 用现在流行的说法就是训练师和帕鲁。
@@ -77,7 +77,7 @@ k8s 可以将 pod 从某个 Node 调度到另一个 Node，还能以 pod 为单�
 另外，前面提到控制平面会用 **Controller Manager** （通过 API Server)控制 Node 创建和关闭服务，那 Node 也得有个组件能接收到这个命令才能去做这些动作，这个组件叫 **kubelet**，它主要负责管理和监控 Pod。
 最后，Node 中还有个 **Kube Proxy** ，它负责 Node 的网络通信功能，有了它，外部请求就能被转发到 Pod 内。
 
-![控制平面和Node的组件](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421397283.jpeg)控制平面和Node的组件
+![控制平面和Node的组件](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421397283.jpeg)
 
 ### Cluster
 
@@ -90,7 +90,7 @@ k8s 可以将 pod 从某个 Node 调度到另一个 Node，还能以 pod 为单�
 上面提到说我们可以使用 k8s 提供的 API 去创建服务，但问题就来了，这是需要我们自己写代码去调用这些 API 吗？
 答案是不需要，k8s 为我们准备了一个命令行工具 **kubectl**，我们只需要执行命令，它内部就会调用 k8s 的 API。
 
-![kubectl调用k8s的API](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421553497.jpeg)kubectl调用k8s的API
+![kubectl调用k8s的API](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421553497.jpeg)
 
 接下来我们以部署服务为例子，看下 k8s 是怎么工作的。
 
@@ -110,7 +110,7 @@ k8s 可以将 pod 从某个 Node 调度到另一个 Node，还能以 pod 为单�
 以前外部用户小明，直接在浏览器上发送 http 请求，就能打到我们服务器上的 Nginx，然后转发到部署的服务内。
 用了 k8s 之后，外部请求会先到达 k8s 集群的 Ingress 控制器，然后请求会被转发到 k8s 内部的某个 Node 的 **Kube Proxy** 上，再找到对应的 pod，然后才是转发到内部**容器服务**中，处理结果原路返回，到这就完成了一次服务调用。
 
-![用户调用k8s内应用服务的流程](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421636026.jpeg)用户调用k8s内应用服务的流程
+![用户调用k8s内应用服务的流程](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421636026.jpeg)
 
 到这里我们就大概了解了 k8s 的工作原理啦，它本质上就是应用服务和服务器之间的**中间层**，通过暴露一系列 API 能力让我们简化服务的部署运维流程。
 
@@ -124,3 +124,5 @@ k8s 可以将 pod 从某个 Node 调度到另一个 Node，还能以 pod 为单�
 - 文章通过怎么部署服务和怎么调用服务两个例子将这些组件串联了起来，方便大家加深理解。
 
 最后给大家留一个问题，我们提到 k8s 的时候，一般会提一下 [dockeropen in new window](https://golangguide.top/架构/Docker/), 但为了避免大家混淆，我在写这篇文章的时候，只字不提 docker，你知道 **docker 和 k8s 之间是什么关系吗？**欢迎评论区聊聊。
+
+转自：[golang全栈指南](https://golangguide.top/)

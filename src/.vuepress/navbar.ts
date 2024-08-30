@@ -2,9 +2,9 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/demo/",
-  
+  // "/demo/",
   "/SpringBoot/",
+
   {
     text: "Java",
     prefix: "posts/Java/",
@@ -117,6 +117,7 @@ export default navbar([
       }
     ]
   },
+  "/云原生/",
   {
     text: "面试复盘",
     prefix: "posts/interview/",
