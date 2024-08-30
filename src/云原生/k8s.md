@@ -66,12 +66,12 @@ Node 是实际的工作节点，它既可以是**裸机服务器**，也可以�
 如果你不了解容器镜像的含义，你可以简单理解为它其实就是将**应用代码**和依赖的**系统环境**打了个压缩包，在任意一台机器上解压这个压缩包，就能正常运行服务。为了下载和部署镜像，Node 中会有一个 **Container runtime** 组件。
 
 ![将容器镜像粗略理解为压缩包](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1709421268783.jpeg)
-每个应用服务都可以认为是一个 **Container**（容器), 并且大多数时候，我们还会为应用服务搭配一个日志收集器 Container 或监控收集器 Container，多个 Container 共同组成一个一个 **Pod**，它运行在 Node 上。
+每个应用服务都可以认为是一个 **Container**（容器)，并且大多数时候，我们还会为应用服务搭配一个日志收集器 Container 或监控收集器 Container，多个 Container 共同组成一个一个 **Pod**，它运行在 Node 上。
 
 ![一个pod内有多个容器](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240829182001398.png)
 
 k8s 可以将 pod 从某个 Node 调度到另一个 Node，还能以 pod 为单位去做重启和动态扩缩容的操作。
-所以说 **Pod 是 k8s 中最小的调度单位**。
+所以说 『**Pod 是 k8s 中最小的调度单位**』。
 
 ![Node调度Pod](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240829182021097.png)
 另外，前面提到控制平面会用 **Controller Manager** （通过 API Server)控制 Node 创建和关闭服务，那 Node 也得有个组件能接收到这个命令才能去做这些动作，这个组件叫 **kubelet**，它主要负责管理和监控 Pod。
@@ -123,6 +123,8 @@ k8s 可以将 pod 从某个 Node 调度到另一个 Node，还能以 pod 为单�
 - 控制平面内有 API Server，Scheduler，Controller Manager 以及 etcd 等组件。Node 中含有 Pod，Kubelet,Container runtime, Kube Proxy 等组件。控制平面和 Node 共同构成一个 Cluster。
 - 文章通过怎么部署服务和怎么调用服务两个例子将这些组件串联了起来，方便大家加深理解。
 
-最后给大家留一个问题，我们提到 k8s 的时候，一般会提一下 [dockeropen in new window](https://golangguide.top/架构/Docker/), 但为了避免大家混淆，我在写这篇文章的时候，只字不提 docker，你知道 **docker 和 k8s 之间是什么关系吗？**欢迎评论区聊聊。
+最后给大家留一个问题，我们提到 k8s 的时候，一般会提一下 
+
+docker, 但为了避免大家混淆，我在写这篇文章的时候，只字不提 docker，你知道 docker 和 k8s 之间是什么关系吗？欢迎评论区聊聊。
 
 转自：[golang全栈指南](https://golangguide.top/)

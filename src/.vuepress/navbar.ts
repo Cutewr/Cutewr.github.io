@@ -60,9 +60,7 @@ export default navbar([
         prefix: "Sort/",
         children: [
           {text: "快速排序的基准选取及优化",link: "快速排序的基准选取及优化"},
-          {text: "排序算法总结",link: "排序算法总结",},
-          {text: "MySQL日志",link: "3log"},
-          {text: "MySQL事务",link: "4transaction",},
+          {text: "排序算法总结",link: "排序算法总结",}
         ],
       },
     ],
@@ -89,6 +87,7 @@ export default navbar([
           { text: "Redis线程模型", link: "2" },
           { text: "Redis持久化", link: "2" },
           { text: "Redis生产问题", link: "2" },
+          { text: "Redis高可用", link: "RedisHA" },
         ],
       },
       {text: "MongoDB",link: "MongoDB"},

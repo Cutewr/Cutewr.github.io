@@ -86,7 +86,7 @@ CMD ["python", "app.py"]
 只要将容器镜像传到任意一台服务器上，对这个"压缩包"执行"解压缩"，我们就能同时运行环境和程序。太完美了！
 但是现在还有个问题，怎么将容器镜像传到那么多服务器上呢？
 
-## [Registry 是什么](https://golangguide.top/架构/云原生/核心知识点/docker是什么docker和kubernetes(k8s)之间是什么关系有什么区别.html#registry-是什么)
+## Registry 是什么
 
 服务器那么多，挨个将容器镜像传过去也不是不行，就是将压力全给到发送方的**网络带宽**了。有没有更好的解决方案？
 有。可以参考 `github` 代码仓库 的做法，我们通常会使用 `git push` 将代码传到 github，有需要的人自己通过 `git pull` 的方式将代码从 github 拉到自己的机器上。
@@ -117,7 +117,7 @@ CMD ["python", "app.py"]
 
 ![容器本质是一个特殊进程](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240830130332589.png)
 
-## [Docker 的架构原理](https://golangguide.top/架构/云原生/核心知识点/docker是什么docker和kubernetes(k8s)之间是什么关系有什么区别.html#docker-的架构原理)
+## Docker 的架构原理
 
 现在，我们回到日常使用场景中，聊聊 Docker 的架构原理。它是经典的 Client/Server 架构。Client 对应 Docker-cli， Server 对应 Docker daemon。
 我们在命令行里敲 Docker 命令，使用的就是 Docker-cli.
@@ -203,7 +203,7 @@ Docker Compose 解决的是**多个容器组成的一整套服务**的部署。
 
 ## Docker 和 k8s 的关系是什么？
 
-还记得之前的[文章](https://golangguide.top/架构/微服务/核心知识点/k8s到底是什么)里提到的 k8s 吗？它会在多台 Node 服务器上调度 Pod，进行部署和扩缩容。
+还记得之前的[文章](http://cutewr.github.io/云原生/k8s.html)里提到的 k8s 吗？它会在多台 Node 服务器上调度 Pod，进行部署和扩缩容。
 
 ![k8s的node内部](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/1711882564528.jpeg)
 
