@@ -38,7 +38,7 @@ Redis作为一个高性能Nosql中间件，会有很多热点数据存放在Redi
 
 主从复制模式，简单来说就是把一台Redis服务器的数据，复制到其他Redis服务器中。其中负责复制数据的来源称为master，被动接收数据并同步的节点称为slave，数据的复制是单向的，如图5-1所示，对于主从模式，其实有很多的变体。
 
-在很多组件中都有使用这种思想，比如mysql的主从复制、redis的主从复制、activemq的主从复制、kafka里面的数据副本机制等等，所以大家需要举一反三，融会贯通。
+在很多组件中都有使用这种思想，比如mysql的主从复制、Redis的主从复制、activemq的主从复制、kafka里面的数据副本机制等等，所以大家需要举一反三，融会贯通。
 
 ![](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240830145144025.png)
 
@@ -47,8 +47,8 @@ Redis作为一个高性能Nosql中间件，会有很多热点数据存放在Redi
 ### 主从复制的好处
 
 1. 数据冗余，主从复制实现了数据的热备，是除了持久化机制之外的另外一种数据保存方式。
-2. 读写分离，在主从复制的基础上，配合读写分离机制，可以由主节点提供写服务，从节点提供读服务。在读多写少的场景中，可以增加从节点来分担主节点的读取能力，从而提高redis-server的并发量
-4. 保证高可用，作为后备数据库，如果主节点出现故障后，可以切换到从节点继续工作，保证redis-server的高可用。
+2. 读写分离，在主从复制的基础上，配合读写分离机制，可以由主节点提供写服务，从节点提供读服务。在读多写少的场景中，可以增加从节点来分担主节点的读取能力，从而提高Redis-server的并发量
+4. 保证高可用，作为后备数据库，如果主节点出现故障后，可以切换到从节点继续工作，保证Redis-server的高可用。
 
 ### Redis如何配置主从复制
 
@@ -56,7 +56,7 @@ Redis作为一个高性能Nosql中间件，会有很多热点数据存放在Redi
 
 在Redis中有三种方式来开启主从复制。
 
-- 在从服务器的redis.conf配置文件中加入下面这个配置
+- 在从服务器的Redis.conf配置文件中加入下面这个配置
 
   ```shell
   replicaof master_ip master_port
@@ -65,13 +65,13 @@ Redis作为一个高性能Nosql中间件，会有很多热点数据存放在Redi
 - 通过启动命令来配置，也就是启动slave节点时执行如下命令
 
   ```shell
-  ./redis-server ../redis.conf --replicaof <masterip> <masterport>
+  ./Redis-server ../Redis.conf --replicaof <masterip> <masterport>
   ```
 
-- 启动redis-server之后，直接在客户端窗口执行下面命令
+- 启动Redis-server之后，直接在客户端窗口执行下面命令
 
   ```shell
-  redis>replicaof master_ip master_port
+  Redis>replicaof master_ip master_port
   ```
 
 #### 准备三台虚拟机
@@ -84,7 +84,7 @@ Redis作为一个高性能Nosql中间件，会有很多热点数据存放在Redi
 - 192.168.221.129（slave）
 - 192.168.221.130（slave）
 
-这三台机器上都需要安装redis-server，安装步骤如下。
+这三台机器上都需要安装Redis-server，安装步骤如下。
 
 > 注意事项，Redis6安装需要gcc版本大于5.3以上，否则安装会报错。
 
@@ -102,20 +102,20 @@ echo -e "\nsource /opt/rh/devtoolset-9/enable" >>/etc/profile
 
 ```shell
 cd /usr/local/
-wget http://download.redis.io/releases/redis-6.0.9.tar.gz
-tar -zxvf redis-6.0.9.tar.gz
-cd redis-6.0.9
+wget http://download.Redis.io/releases/Redis-6.0.9.tar.gz
+tar -zxvf Redis-6.0.9.tar.gz
+cd Redis-6.0.9
 make
 make test
-make install PREFIX=/data/program/redis 
-cp redis.conf /data/program/redis/redis.conf
+make install PREFIX=/data/program/Redis 
+cp Redis.conf /data/program/Redis/Redis.conf
 ```
 
 #### 演示配置过程
 
 在192.168.221.129和192.168.221.130这两台机器上分别按照下面的操作增加配置。
 
-- 编辑redis.conf文件，通过shift+g跳转到最后一行，增加如下配置
+- 编辑Redis.conf文件，通过shift+g跳转到最后一行，增加如下配置
 
   ```shell
   replicaof 192.168.221.128 6379
@@ -124,7 +124,7 @@ cp redis.conf /data/program/redis/redis.conf
 - 分别启动这两台机器，启动成功后，使用如下命令查看集群状态
 
   ```shell
-  redis> info replication
+  Redis> info replication
   ```
 
 - 启动日志中可以看到，在启动过程中已经从master节点复制了信息。
@@ -152,12 +152,12 @@ cp redis.conf /data/program/redis/redis.conf
 
 **如果没有开启日志，可以通过下面的方法进行开启**
 
-> - 找到Redis的配置文件 redis.conf
-> - 打开该配置文件， vi redis.conf;
+> - 找到Redis的配置文件 Redis.conf
+> - 打开该配置文件， vi Redis.conf;
 > - 通过linux的查询命令找到 (loglevel下面)logfile " " ;
-> - 在冒号里面输入日志的路径，比如logfile “/usr/local/redis/log/redis.log”， 需要提前创建好目录和文件，redis默认不会创建该文件。
+> - 在冒号里面输入日志的路径，比如logfile “/usr/local/Redis/log/Redis.log”， 需要提前创建好目录和文件，Redis默认不会创建该文件。
 
-接着，我们在master节点上通过设置一些key，会发现数据立刻就同步到了两个slave节点上，从而完成了主从同步功能。不过在默认情况下，slave服务器是只读的，如果直接在slave服务器上做修改，会报错. 不过可以在slave服务器的redis.conf中找到一个属性，允许slave服务器可以写，但是不建议这么做。因为slave服务器上的更改不能往master上同步，会造成数据不同步的问题
+接着，我们在master节点上通过设置一些key，会发现数据立刻就同步到了两个slave节点上，从而完成了主从同步功能。不过在默认情况下，slave服务器是只读的，如果直接在slave服务器上做修改，会报错. 不过可以在slave服务器的Redis.conf中找到一个属性，允许slave服务器可以写，但是不建议这么做。因为slave服务器上的更改不能往master上同步，会造成数据不同步的问题
 
 ```shell
 slave-read-only no 
@@ -190,7 +190,7 @@ Redis的主从复制分两种，一种是全量复制，另一种是增量复制
 
 下面演示一下主从复制具体的实现。
 
-1. 在slave服务器redis cli上执行 **REPLCONF listening-port 6379** (向主数据库发送replconf命令说明自己的端口号)
+1. 在slave服务器Redis cli上执行 **REPLCONF listening-port 6379** (向主数据库发送replconf命令说明自己的端口号)
 2. 开始同步，向master服务器发送sync命令开始同步，此时master会发送快照文件和缓存的命令。
 
 ```shell
@@ -202,7 +202,7 @@ Redis的主从复制分两种，一种是全量复制，另一种是增量复制
   "ping"
 ```
 
-3. slave会将收到的内容写入到硬盘上的临时文件，当写入完成后会用该临时文件替换原有的RDB快照文件。需要注意的是，在同步的过程中slave并不会阻塞，仍然可以处理客户端的命令。默认情况下slave会用同步前的数据对命令进行响应，如果我们希望读取的数据不能出现脏数据，那么可以在redis.conf文件中配置下面的参数，来使得slave在同步完成对所有命令之前，都回复错误:**SYNC with master in progress**
+3. slave会将收到的内容写入到硬盘上的临时文件，当写入完成后会用该临时文件替换原有的RDB快照文件。需要注意的是，在同步的过程中slave并不会阻塞，仍然可以处理客户端的命令。默认情况下slave会用同步前的数据对命令进行响应，如果我们希望读取的数据不能出现脏数据，那么可以在Redis.conf文件中配置下面的参数，来使得slave在同步完成对所有命令之前，都回复错误:**SYNC with master in progress**
 
 ```shell
 slave-serve-stale-data no
@@ -211,7 +211,7 @@ slave-serve-stale-data no
 4. 复制阶段结束后，master执行的任何非查询语句都会异步发送给slave。 可以在master节点执行set命令，可以在slave节点看到如下同步的指令。
 
 ```shell
-redis > sync
+Redis > sync
 "set","11","11"
 "ping"
 ```
@@ -220,16 +220,16 @@ redis > sync
 
 master/slave 复制策略是采用乐观复制，也就是说可以容忍在一定时间内master/slave数据的内容是不同的，但是两者的数据会最终同步成功。
 
-具体来说，redis的主从同步过程本身是异步的，意味着master执行完客户端请求的命令后会立即返回结果给客户端，然后异步的方式把命令同步给slave。这一特征保证启用主从复制后 master的性能不会受到影响。
+具体来说，Redis的主从同步过程本身是异步的，意味着master执行完客户端请求的命令后会立即返回结果给客户端，然后异步的方式把命令同步给slave。这一特征保证启用主从复制后 master的性能不会受到影响。
 
-但是另一方面，如果在这个数据不一致的窗口期间，master/slave因为网络问题断开连接，而这个时候，master是无法得知某个命令最终同步给了多少个slave数据库。不过redis提供了一个配置项来限制只有数据至少同步给多少个slave的时候，master才是可写的：
+但是另一方面，如果在这个数据不一致的窗口期间，master/slave因为网络问题断开连接，而这个时候，master是无法得知某个命令最终同步给了多少个slave数据库。不过Redis提供了一个配置项来限制只有数据至少同步给多少个slave的时候，master才是可写的：
 
 ```shell
 min-replicas-to-write 3     表示只有当3个或以上的slave连接到master，master才是可写的
 min-replicas-max-lag 10     表示允许slave最长失去连接的时间，如果10秒还没收到slave的响应，则master认为该slave以断开
 ```
 
-修改master redis服务的redis.conf， 打开这两个配置，重启即可看到效果
+修改master Redis服务的Redis.conf， 打开这两个配置，重启即可看到效果
 
 #### 增量复制
 
@@ -285,7 +285,7 @@ repl-diskless-sync yes
 
 ## Master自动选举之Sentinel哨兵机制
 
-在前面讲的master/slave模式，在一个典型的一主多从的系统中，slave在整个体系中起到了数据冗余备份和读写分离的作用。当master遇到异常终端后，开发者可以通过手动方式选择一个slave数据库来升级到master，使得系统能够继续提供服务。然后这个过程需要人工干预，比较麻烦； redis并没有提供自动master选举功能，而是需要借助一个哨兵来进行监控。
+在前面讲的master/slave模式，在一个典型的一主多从的系统中，slave在整个体系中起到了数据冗余备份和读写分离的作用。当master遇到异常中断后，开发者可以通过手动方式选择一个slave数据库来升级到master，使得系统能够继续提供服务，这个过程需要人工干预，比较麻烦； Redis并没有提供自动master选举功能，而是需要借助一个哨兵来进行监控。
 
 ### 什么是哨兵
 
@@ -294,13 +294,13 @@ repl-diskless-sync yes
 1. 监控master和slave是否正常运行
 2. master出现故障时自动将slave数据库升级为master
 
-哨兵是一个独立的进程，使用哨兵后的架构如图5-3所示，同时为了保证哨兵的高可用，我们会对Sentinel做集群部署，因此Sentinel不仅仅监控Redis所有的主从节点，Sentinel也会实现相互监控。
+哨兵是一个独立的进程，使用哨兵后的集群架构如下图所示。同时为了保证哨兵的高可用，我们会对Sentinel做集群部署，因此Sentinel不仅仅监控Redis所有的主从节点，Sentinel也会实现相互监控。
 
 ![](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240830145443588.png)
 
 ### 配置哨兵集群
 
-在前面主从复制的基础上，增加三个sentinel节点，来实现对redis中master选举的功能。
+在前面主从复制的基础上，增加三个sentinel节点，来实现对Redis中master选举的功能。
 
 - 192.168.221.128（sentinel）
 - 192.168.221.129（sentinel）
@@ -308,10 +308,10 @@ repl-diskless-sync yes
 
 sentinel哨兵的配置方式如下：
 
-- 从redis-6.0.9源码包中拷贝sentinel.conf文件到redis/bin安装目录下
+- 从Redis-6.0.9源码包中拷贝sentinel.conf文件到Redis/bin安装目录下
 
 ```shell
-  cp /data/program/redis-6.0.9/sentinel.conf /data/program/redis/sentinel.conf
+  cp /data/program/Redis-6.0.9/sentinel.conf /data/program/Redis/sentinel.conf
 ```
 
 - 修改以下配置
@@ -321,13 +321,13 @@ sentinel哨兵的配置方式如下：
   sentinel monitor mymaster 192.168.221.128 6379 2 
   sentinel down-after-milliseconds mymaster 5000   # 表示如果5s内mymaster没响应，就认为SDOWN
   sentinel failover-timeout mymaster 15000         # 表示如果15秒后,mysater仍没活过来，则启动failover，从剩下的slave中选一个升级为master
-  logfile "/data/program/redis/logs/sentinels.log"  # 需要提前创建好文件
+  logfile "/data/program/Redis/logs/sentinels.log"  # 需要提前创建好文件
 ```
 
 - 通过下面这个命令启动sentinel哨兵
 
 ```shell
-  ./redis-sentinel ../sentinel.conf
+  ./Redis-sentinel ../sentinel.conf
 ```
 
 - 启动成功后，得到一下信息，表示哨兵启动成功并且开始监控集群节点
@@ -341,7 +341,7 @@ sentinel哨兵的配置方式如下：
   103323:X 13 Jul 2021 15:16:48.765 * +fix-slave-config slave 192.168.221.129:6379 192.168.221.129 6379 @ mymaster 192.168.221.128 6379
 ```
 
-**其他两个节点的配置和上面完全相同，都去监视master节点即可，主要，sentinel.conf文件中master节点的ip一定不能输127.0.0.1，否则其他sentinel节点无法和它通信**
+**其他两个节点的配置和上面完全相同，都去监视master节点即可**。
 
 当其他sentinel哨兵节点启动后，第一台启动的sentinel节点还会输出如下日志，表示有其他sentinel节点加入进来。
 
@@ -353,7 +353,7 @@ sentinel哨兵的配置方式如下：
 
 ### 模拟master节点故障
 
-我们直接把redis主从复制集群的master节点，通过`./redis-cli shutdown`命令停止，于是我们观察三个sentinel哨兵的日志，先来看第一台启动的sentinel日志，得到如下内容。
+我们直接把Redis主从复制集群的master节点，通过`./Redis-cli shutdown`命令停止，于是我们观察三个sentinel哨兵的日志，先来看第一台启动的sentinel日志，得到如下内容。
 
 ```shell
 103625:X 13 Jul 2021 15:35:01.241 # +new-epoch 9
@@ -404,35 +404,28 @@ sentinel哨兵的配置方式如下：
 
 ### 实现原理
 
-1)：每个Sentinel以每秒钟一次的频率向它所知的Master/Slave以及其他 Sentinel 实例发送一个 PING 命令
+1. 每个Sentinel以每秒钟一次的频率向它所知的Master/Slave以及其他 Sentinel 实例发送一个 PING 命
+2. 如果一个实例（instance）距离最后一次有效回复 PING 命令的时间超过 **down-after-milliseconds** 选项所指定的值， 则这个实例会被 Sentinel 标记为主观下线。
+3. 如果一个Master被标记为主观下线，则正在监视这个Master的所有 Sentinel 要以每秒一次的频率确认Master的确进入了主观下线状态。
+4. 当有足够数量的 Sentinel（大于等于配置文件指定的值：quorum）在指定的时间范围内确认Master的确进入了主观下线状态， 则Master会被标记为客观下线 。
+5. 在一般情况下， 每个 Sentinel 会以每 10 秒一次的频率向它已知的所有Master，Slave发送 INFO 命令。当Master被 Sentinel 标记为客观下线时，Sentinel 向下线的 Master 的所有 Slave 发送 INFO 命令的频率会从 10 秒一次改为每秒一次 ，若没有足够数量的 Sentinel 同意 Master 已经下线， Master 的客观下线状态就会被移除。
+6.  若 Master 重新向 Sentinel 的 PING 命令返回有效回复， Master 的主观下线状态就会被移除。
 
-2)：如果一个实例（instance）距离最后一次有效回复 PING 命令的时间超过 **down-after-milliseconds** 选项所指定的值， 则这个实例会被 Sentinel 标记为主观下线。
+主观下线：Subjectively Down，简称 SDOWN，指的是当前 Sentinel 实例对某个Redis服务器做出的下线判断。
 
-3)：如果一个Master被标记为主观下线，则正在监视这个Master的所有 Sentinel 要以每秒一次的频率确认Master的确进入了主观下线状态。
-
-4)：当有足够数量的 Sentinel（大于等于配置文件指定的值：quorum）在指定的时间范围内确认Master的确进入了主观下线状态， 则Master会被标记为客观下线 。
-
-5)：在一般情况下， 每个 Sentinel 会以每 10 秒一次的频率向它已知的所有Master，Slave发送 INFO 命令
-
-6)：当Master被 Sentinel 标记为客观下线时，Sentinel 向下线的 Master 的所有 Slave 发送 INFO 命令的频率会从 10 秒一次改为每秒一次 ，若没有足够数量的 Sentinel 同意 Master 已经下线， Master 的客观下线状态就会被移除。
-
-8)：若 Master 重新向 Sentinel 的 PING 命令返回有效回复， Master 的主观下线状态就会被移除。
-
-**主观下线：**Subjectively Down，简称 SDOWN，指的是当前 Sentinel 实例对某个redis服务器做出的下线判断。
-
-**客观下线：**Objectively Down， 简称 ODOWN，指的是多个 Sentinel 实例在对Master Server做出 SDOWN 判断，并且通过 SENTINEL之间交流后得出Master下线的判断。然后开启failover
+客观下线：Objectively Down， 简称 ODOWN，指的是多个 Sentinel 实例在对Master Server做出 SDOWN 判断，并且通过 SENTINEL之间交流后得出Master下线的判断。然后开启failover
 
 ### 谁来完成故障转移？
 
-当redis中的master节点被判定为客观下线之后，需要重新从slave节点选择一个作为新的master节点，那现在有三个sentinel节点，应该由谁来完成这个故障转移过程呢？所以这三个sentinel节点必须要通过某种机制达成一致，在Redis中采用了Raft算法来实现这个功能。
+当Redis中的master节点被判定为客观下线之后，需要重新从slave节点选择一个作为新的master节点，那现在有三个sentinel节点，应该由谁来完成这个故障转移过程呢？所以这三个sentinel节点必须要通过某种机制达成一致，在Redis中采用了Raft算法来实现这个功能。
 
-> 每次master出现故障时，都会触发raft算法来选择一个leader完成redis主从集群中的master选举功能。
+> 每次master出现故障时，都会触发raft算法来选择一个leader完成Redis主从集群中的master选举功能。
 
 #### 数据一致性问题
 
 了解raft算法之前，我们来了解一个拜占庭将军问题。
 
-拜占庭将军问题（Byzantine failures），是由**莱斯利·兰伯**特提出的点对点通信中的基本问题。具体含义是在存在消息丢失的不可靠信道上试图通过消息传递的方式达到一致性是不可能的。
+拜占庭将军问题（Byzantine failures），是由**莱斯利·兰伯**特提出的点对点通信中的基本问题。具体含义是在『存在消息丢失的不可靠信道』上试图通过『消息传递』的方式达到一致性是不可能的。
 
 拜占庭位于如今的土耳其的伊斯坦布尔，是东罗马帝国的首都。由于当时拜占庭罗马帝国国土辽阔，为了达到防御目的，每个军队都分隔很远，将军与将军之间只能靠信差传消息。在战争的时候，拜占庭军队内所有将军和副官必须达成一致的共识，决定是否有赢的机会才去攻打敌人的阵营。但是，在军队内有可能存有叛徒和敌军的间谍，左右将军们的决定又扰乱整体军队的秩序。在进行共识时，结果并不代表大多数人的意见。这时候，在已知有成员谋反的情况下，其余忠诚的将军在不受叛徒的影响下如何达成一致的协议，这就是是著名的拜占庭问题。
 
@@ -446,7 +439,7 @@ sentinel哨兵的配置方式如下：
 
 拜占庭假设是对现实世界的模型化，由于硬件错误、网络拥塞或断开以及遭到恶意攻击，计算机和网络可能出现不可预料的行为，所以如何在这样的环境下达成一致，这就是所谓的数据一致性问题。
 
-回到Sentinel中，这三个Sentinel节点，需要选择一个节点来负责针对redis集群进行故障恢复，那这三个节点中谁能做这个事情？因此同样需要基于某个机制来达成共识。
+回到Sentinel中，这三个Sentinel节点，需要选择一个节点来负责针对Redis集群进行故障恢复，那这三个节点中谁能做这个事情？因此同样需要基于某个机制来达成共识。
 
 在很多中间件中都需要用到数据一致性算法，最直观的是像zookeeper这样一个组件，他的高可用设计是由leader和follow组成，当leader节点因为异常宕机了， 需要从生下的follow节点选举出一个新的leader节点，那么这个选举过程需要集群中所有节点达成一致，也就是只有所有节点都赞同某个follow节点成为leader，它才能成为leader节点。而这个共识达成的前提是所有节点需要对某个投票结果达成一致，否则就无法选举出新的leader，因此这里必然需要用到共识算法。
 
@@ -489,9 +482,13 @@ Raft算法的核心思想：先到先得，少数服从多数。
 
 ## Redis分布式扩展之Redis Cluster方案
 
-主从切换的过程中会丢失数据，因为只有一个master，只能单点写，没有解决水平扩容的问题。而且每个节点都保存了所有数据，一个是内存的占用率较高，另外就是如果进行数据恢复时，非常慢。而且数据量过大对数据IO操作的性能也会有影响。
+主从复制的缺点：
 
-所以我们同样也有对Redis数据分片的需求，所谓分片就是把一份大数据拆分成多份小数据，在3.0之前，我们只能通过构建多个redis主从节点集群，把不同业务数据拆分到不冉的集群中，这种方式在业务层需要有大量的代码来完成数据分片、路由等工作，导致维护成本高、增加、移除节点比较繁琐。
+1. 主从切换的过程中有可能会丢失数据，因为只有一个master，只能单点写，没有解决水平扩容的问题。
+2. 每个节点都保存了所有数据，一个是内存的占用率较高，另外就是如果进行数据恢复时非常慢。
+3. 数据量过大对数据IO操作的性能也会有影响。
+
+所以我们对Redis有数据分片的需求，所谓分片就是把一份大数据拆分成多份小数据，在3.0之前，我们只能通过构建多个Redis主从节点集群，把不同业务数据拆分到不同的集群中，这种方式在业务层需要有大量的代码来完成数据分片、路由等工作，导致维护成本高、增加、移除节点比较繁琐。
 
 Redis3.0之后引入了Redis Cluster集群方案，它用来解决分布式扩展的需求，同时也实现了高可用机制。
 
@@ -499,9 +496,9 @@ Redis3.0之后引入了Redis Cluster集群方案，它用来解决分布式扩�
 
 一个Redis Cluster由多个Redis节点构成，不同节点组服务的数据没有交集，也就是每个一节点组对应数据sharding的一个分片。
 
-节点组内部分为主备两类节点，对应master和slave节点。两者数据准实时一致，通过异步化订的主备复制机制来保证。
+节点组内部分为主备两类节点，对应master和slave节点。两者数据准实时一致，通过异步化的主从复制机制来保证。
 
-一个节点组有且只有一个master节点，同时可以有0到多个slave节点，在这个节点组中只有master节点对用户提供些服务，读服务可以由master或者slave提供。如图5-4中，包含三个master节点以及三个master对应的slave节点，一般一组集群至少要6个节点才能保证完整的高可用。
+一个节点组有且只有一个master节点，同时可以有0到多个slave节点，在这个节点组中只有master节点对用户提供些服务，读服务可以由master或者slave提供。如下图，包含三个master节点以及三个master对应的slave节点，一般一组集群至少要6个节点才能保证完整的高可用。
 
 其中三个master会分配不同的slot（表示数据分片区间），当master出现故障时，slave会自动选举成为master顶替主节点继续提供服务。
 
@@ -509,22 +506,22 @@ Redis3.0之后引入了Redis Cluster集群方案，它用来解决分布式扩�
 
 ### 关于gossip协议
 
-在图5-4描述的架构中，其他的点都好理解，就是关于gossip协议是干嘛的，需要单独说明一下。
+再上图描述的架构中，其他的点都好理解，就是关于gossip协议是啥，需要单独说明一下。
 
-在整个redis cluster架构中，如果出现以下情况
+在整个Redis cluster架构中，如果出现以下情况
 
 - 新加入节点
 - slot迁移
 - 节点宕机
 - slave选举成为master
 
-我们希望这些变化能够让整个集群中的每个节点都能够尽快发现，传播到整个集群并且集群中所有节点达成一致，那么各个节点之间就需要相互连通并且携带相关状态数据进行传播，
+我们希望这些变化能够让整个集群中的每个节点都能够尽快发现，传播到整个集群并且集群中所有节点达成一致，那么各个节点之间就需要相互连通并且携带相关状态数据进行传播。
 
 按照正常的逻辑是采用广播的方式想集群中的所有节点发送消息，有点是集群中的数据同步较快，但是每条消息都需要发送给所有节点，对CPU和带宽的消耗过大，所以这里采用了gossip协议。
 
 Gossip protocol 也叫 Epidemic Protocol （流行病协议），别名很多比如：“流言算法”、“疫情传播算法”等。
 
-它的特点是，在节点数量有限的网络中，每个节点都会“随机”（不是真正随机，而是根据规则选择通信节点）与部分节点通信，经过一番杂乱无章的通信后，每个节点的状态在一定时间内会达成一致，如图5-5所示。
+它的特点是，在节点数量有限的网络中，每个节点都会“随机”（不是真正随机，而是根据规则选择通信节点）与部分节点通信，经过一番杂乱无章的通信后，每个节点的状态在一定时间内会达成一致，如下图所示。
 
 假设我们提前设置如下规则：
 
@@ -538,7 +535,7 @@ Gossip protocol 也叫 Epidemic Protocol （流行病协议），别名很多比
 
 这里一共有 16 个节点，节点 1 为初始被感染节点，通过 Gossip 过程，最终所有节点都被感染：
 
-![](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240830145530159.png)
+![image-20240830163046827](https://cdn.jsdelivr.net/gh/Cutewr/blogimage@main/img/image-20240830163046827.png)
 
 ### gossip协议消息
 
@@ -566,35 +563,35 @@ gossip协议包含多种消息，包括ping，pong，meet，fail等等。
 - 192.168.221.129 7002 、 7003
 - 192.168.221.130 7004 、 7005
 
-### 分别启动6个节点
+#### 分别启动6个节点
 
-- 在redis安装目录下，分别创建以下目录，这些目录必须要提前创建好，redis启动时不会主动创建这些目录。
+- 在Redis安装目录下，分别创建以下目录，这些目录必须要提前创建好，Redis启动时不会主动创建这些目录。
 
 ```shell
-  mkdir -p /data/program/redis/run
-  mkdir -p /data/program/redis/logs
-  mkdir -p /data/program/redis/data/7000、7001
-  mkdir -p /data/program/redis/conf
-  mkdir -p /data/program/redis/redis-cluster
+  mkdir -p /data/program/Redis/run
+  mkdir -p /data/program/Redis/logs
+  mkdir -p /data/program/Redis/data/7000、7001
+  mkdir -p /data/program/Redis/conf
+  mkdir -p /data/program/Redis/Redis-cluster
 ```
 
-- 拷贝一份redis.conf到redis-cluster目录下，由于只有三台机器，所以每个机器上需要运行两个redis-server，因此需要修改redis.conf文件的名字来做区分，redis_7000.conf。并且修改该文件的一下内容。
+- 拷贝一份Redis.conf到Redis-cluster目录下，由于只有三台机器，所以每个机器上需要运行两个Redis-server，因此需要修改Redis.conf文件的名字来做区分，Redis_7000.conf。并且修改该文件的一下内容。
 
 ```shell
-  pidfile "/data/program/redis/run/redis_7000.pid"   #pid存储目录
-  logfile "/data/program/redis/logs/redis_7000.log"  #日志存储目录
-  dir "/data/program/redis/data/7000"   #数据存储目录，目录要提前创建好
+  pidfile "/data/program/Redis/run/Redis_7000.pid"   #pid存储目录
+  logfile "/data/program/Redis/logs/Redis_7000.log"  #日志存储目录
+  dir "/data/program/Redis/data/7000"   #数据存储目录，目录要提前创建好
   cluster-enabled yes                   #开启集群
   cluster-config-file nodes-7000.conf   #集群节点配置文件，这个文件是不能手动编辑的。确保每一个集群节点的配置文件不同
   cluster-node-timeout 15000            #集群节点的超时时间，单位：ms，超时后集群会认为该节点失败
 ```
 
-- 每个节点需要启动两个redis-server，所以对配置文件做一份拷贝，然后修改以下配置
+- 每个节点需要启动两个Redis-server，所以对配置文件做一份拷贝，然后修改以下配置
 
 ```shell
-  pidfile "/data/program/redis/run/redis_7001.pid"   #pid存储目录
-  logfile "/data/program/redis/logs/redis_7001.log"  #日志存储目录
-  dir "/data/program/redis/data/7001"   #数据存储目录，目录要提前创建好
+  pidfile "/data/program/Redis/run/Redis_7001.pid"   #pid存储目录
+  logfile "/data/program/Redis/logs/Redis_7001.log"  #日志存储目录
+  dir "/data/program/Redis/data/7001"   #数据存储目录，目录要提前创建好
   cluster-enabled yes                   #开启集群
   cluster-config-file nodes-7001.conf   #集群节点配置文件，这个文件是不能手动编辑的。确保每一个集群节点的配置文件不同
   cluster-node-timeout 15000            #集群节点的超时时间，单位：ms，超时后集群会认为该节点失败
@@ -605,14 +602,14 @@ gossip协议包含多种消息，包括ping，pong，meet，fail等等。
   **cluster-start.sh**
 
 ```shell
-  ./redis-server ../conf/redis_7000.conf
-  ./redis-server ../conf/redis_7001.conf
+  ./Redis-server ../conf/Redis_7000.conf
+  ./Redis-server ../conf/Redis_7001.conf
 ```
 
 **cluster-shutdown.sh**
 
 ```shell
-  pgrep redis-server | xargs -exec kill -9
+  pgrep Redis-server | xargs -exec kill -9
 ```
 
 通过下面命令让上述脚本拥有执行权限
@@ -623,14 +620,14 @@ gossip协议包含多种消息，包括ping，pong，meet，fail等等。
 
 - 其他两个节点重复上述的过程，完成6个节点的启动。
 
-### 配置redis 集群
+#### 配置Redis 集群
 
-启动完这5台服务器后，需要通过下面的操作来配置集群节点。在redis6.0版本中，创建集群的方式为redis-cli方式直接创建，以下命令在任意一台服务器上执行即可
+启动完这5台服务器后，需要通过下面的操作来配置集群节点。在Redis6.0版本中，创建集群的方式为Redis-cli方式直接创建，以下命令在任意一台服务器上执行即可
 
-用以下命令创建集群，--cluster-replicas 1 参数表示希望每个主服务器都有一个从服务器，这里则代表3主3从，通过该方式创建的带有从节点的机器不能够自己手动指定主节点，redis集群会尽量把主从服务器分配在不同机器上
+用以下命令创建集群，--cluster-replicas 1 参数表示希望每个主服务器都有一个从服务器，这里则代表3主3从，通过该方式创建的带有从节点的机器不能够自己手动指定主节点，Redis集群会尽量把主从服务器分配在不同机器上
 
 ```shell
-[root@localhost bin]# ./redis-cli --cluster create 192.168.221.128:7000 192.168.221.128:7001 192.168.221.129 7002 192.168.221.129 7003 192.168.221.130 7004 192.168.221.130 7005 --cluster-replicas 1
+[root@localhost bin]# ./Redis-cli --cluster create 192.168.221.128:7000 192.168.221.128:7001 192.168.221.129 7002 192.168.221.129 7003 192.168.221.130 7004 192.168.221.130 7005 --cluster-replicas 1
 ```
 
 执行上述命令后，会得到以下执行结果，
@@ -663,12 +660,12 @@ Can I set the above configuration? (type 'yes' to accept): yes
 - 预先分配三个节点的slot区间
 - 自动选择合适的节点作为master
 
-### 查看集群状态等信息
+#### 查看集群状态等信息
 
 - cluster info 查看集群状态信息
 
 ```shell
-  [root@localhost bin]# ./redis-cli -p 7000
+  [root@localhost bin]# ./Redis-cli -p 7000
   127.0.0.1:7000> cluster info
   cluster_state:ok
   cluster_slots_assigned:16384
@@ -702,7 +699,7 @@ Can I set the above configuration? (type 'yes' to accept): yes
 
 ### 数据分布
 
-Redis Cluster中，Sharding采用slot(槽)的概念，一共分成16384个槽，这有点儿类似pre sharding思路。对于每个进入Redis的键值对，根据key进行散列，分配到这16384个slot中的某一个中。使用的hash算法也比较简单，就是CRC16后16384取模**[**crc16(key)%16384**]**。
+Redis Cluster中，Sharding采用slot(槽)的概念，一共分成16384个槽，这有点儿类似pre sharding思路。对于每个进入Redis的键值对，根据key进行散列，分配到这16384个slot中的某一个中。使用的hash算法也比较简单，就是CRC16后16384取模[crc16(key)%16384]。
 
 Redis集群中的每个node(节点)负责分摊这16384个slot中的一部分，也就是说，每个slot都对应一个node负责处理。
 
@@ -716,7 +713,7 @@ Redis集群中的每个node(节点)负责分摊这16384个slot中的一部分，
 
 ### 客户端重定向
 
-如图5-6所示，假设k这个key应该存储在node3上，而此时用户在node1或者node2上调用`set k v`指令，这个时候redis cluster怎么处理呢？
+如图5-6所示，假设k这个key应该存储在node3上，而此时用户在node1或者node2上调用`set k v`指令，这个时候Redis cluster怎么处理呢？
 
 ```shell
 127.0.0.1:7291> set qs 1
@@ -725,12 +722,12 @@ Redis集群中的每个node(节点)负责分摊这16384个slot中的一部分，
 
 服务端返回MOVED，也就是根据key计算出来的slot不归当前节点管理，服务端返回MOVED告诉客户端去7293端口操作。
 
-这个时候更换端口，用redis-cli –p 7293操作，才会返回OK。或者用./redis-cli -c -p port的命令。但是导致的问题是，客户端需要连接两次才能完成操作。所以大部分的redis客户端都会在本地维护一份slot和node的对应关系，在执行指令之前先计算当前key应该存储的目标节点，然后再连接到目标节点进行数据操作。
+这个时候更换端口，用Redis-cli –p 7293操作，才会返回OK。或者用./Redis-cli -c -p port的命令。但是导致的问题是，客户端需要连接两次才能完成操作。所以大部分的Redis客户端都会在本地维护一份slot和node的对应关系，在执行指令之前先计算当前key应该存储的目标节点，然后再连接到目标节点进行数据操作。
 
-在redis集群中提供了下面的命令来计算当前key应该属于哪个slot
+在Redis集群中提供了下面的命令来计算当前key应该属于哪个slot
 
 ```shell
-redis> cluster keyslot key1
+Redis> cluster keyslot key1
 ```
 
 ### 高可用主从切换原理
@@ -801,16 +798,16 @@ OK
 
 ### Redission连接cluster
 
-修改redisson.yml文件，参考spring-boot-redis-client-example这个项目
+修改Redisson.yml文件，参考spring-boot-Redis-client-example这个项目
 
 ```properties
 clusterServersConfig:
   nodeAddresses:
-    - "redis://192.168.221.129:7003"
-    - "redis://192.168.221.129:7002"
-    - "redis://192.168.221.130:7004"
+    - "Redis://192.168.221.129:7003"
+    - "Redis://192.168.221.129:7002"
+    - "Redis://192.168.221.130:7004"
 
-codec: !<org.redisson.codec.JsonJacksonCodec> {}
+codec: !<org.Redisson.codec.JsonJacksonCodec> {}
 ```
 
 注意，nodeAddresses对应的节点都是master。
@@ -822,10 +819,10 @@ Codis 是一个分布式 Redis 解决方案, 对于上层的应用来说, 连接
 
 ### codis的架构
 
-如图5-7所示，表示Codis的整体架构图。
+如下图所示，表示Codis的整体架构图。
 
 **Codis Proxy**： 客户端连接的 Redis 代理服务, 实现了 Redis 协议。 除部分命令不支持以外(不支持的命令列表)，表现的和原生的 Redis 没有区别（就像 Twemproxy）。对于同一个业务集群而言，可以同时部署多个 codis-proxy 实例；不同 codis-proxy 之间由 codis-dashboard 保证状态同
-**codis-redis-group:** 代表一个redis服务集群节点，一个RedisGroup里有一个Master，和多个Slave
+**codis-Redis-group:** 代表一个Redis服务集群节点，一个RedisGroup里有一个Master，和多个Slave
 
 Zookeeper：Codis 依赖 ZooKeeper 来存放数据路由表和 codis-proxy 节点的元信息, codis-config 发起的命令都会通过 ZooKeeper 同步到各个存活的 codis-proxy.
 
