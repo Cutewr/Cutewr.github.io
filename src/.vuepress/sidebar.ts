@@ -100,7 +100,6 @@ export default sidebar({
           "6double.md",
           "7tree.md",
           "8graph.md",
-          "K-wayMerge.md"
         ]
       },
       {
@@ -108,6 +107,14 @@ export default sidebar({
         collapsible: true,
         prefix: "Sort/",
         text: "排序算法",
+        icon: "book",
+        children: "structure", // 自动生成子项结构
+      },
+      {
+        expanded: true,
+        collapsible: true,
+        prefix: "Algorithm/",
+        text: "算法应用",
         icon: "book",
         children: "structure", // 自动生成子项结构
       },

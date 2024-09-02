@@ -52,15 +52,20 @@ export default navbar([
         link: "8graph",
       },
       {
-        text: "多路归并",
-        link: "K-wayMerge",
-      },
-      {
         text: "排序算法",
         prefix: "Sort/",
         children: [
           {text: "快速排序的基准选取及优化",link: "快速排序的基准选取及优化"},
           {text: "排序算法总结",link: "排序算法总结",}
+        ],
+      },
+      {
+        text: "算法应用",
+        prefix: "Algorithm/",
+        children: [
+          {text: "多路归并",link:"K-wayMerge"},
+          {text: "前缀和",link: "preSum"},
+          {text: "回溯算法",link: "BackTrack",}
         ],
       },
     ],
