@@ -65,7 +65,8 @@ export default navbar([
         children: [
           {text: "多路归并",link:"K-wayMerge"},
           {text: "前缀和",link: "preSum"},
-          {text: "回溯算法",link: "BackTrack",}
+          {text: "回溯算法",link: "BackTrack",},
+          {text: "大数乘法",link: "BigMulti",}
         ],
       },
     ],
