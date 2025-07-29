@@ -10,7 +10,19 @@ export default navbar([
     children: [
       { text: "Java基础", link: "JavaBasic" },
       { text: "Java集合", link: "JavaCollection" },
-      { text: "Java并发编程", link: "JUC" },
+      { 
+        text: "Java并发编程", 
+        prefix: "JUC/",
+        children: [
+          {
+            text: "JUC基础",
+            link: "JUCBasic",
+          },
+          {
+            text: "ThreadLocal",
+            link: "ThreadLocal"
+          }]
+      },
       { text: "Java虚拟机", link: "JVM" },
     ],
   },

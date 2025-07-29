@@ -6,21 +6,23 @@ tag:
   - JUC
 ---
 
-# **1.ThreadLocal是什么**
+# ThreadLocal
 
-ThreadLocal在很多地方被称作线程本地存储**（Thread-Local Storage，TLS）**，意思就是ThreadLocal能为每一个线程创建一个存储空间，通过ThreadLocal能够让每一个线程存储自己的副本（set方法传需要存储的对象），这样每个线程取数据时拿到的就是自己的数据（直接调用get方法，不用传参数），这样相互之间就能不影响。
+## ThreadLocal是什么
 
-- **多线程并发问题的解决**
-1. **锁机制：**访问对象修改对象时用锁将该对象封闭起来不准其他线程修改等
-2. **线程局部存储（Thread-Local Storage，TLS）：**为每个线程存一份自己的变量副本，所以ThreadLocal并不是解决共享对象的同步问题，只是从根本上避免同步问题的产生。
+ThreadLocal在很多地方被称作线程本地存储（Thread-Local Storage，TLS），意思就是ThreadLocal能为每一个线程创建一个存储空间，通过ThreadLocal能够让每一个线程存储自己的副本（set方法传需要存储的对象），这样每个线程取数据时拿到的就是自己的数据（直接调用get方法，不用传参数），这样相互之间就能不影响。
+
+- 多线程并发问题的解决
+1. 锁机制：访问对象修改对象时用锁将该对象封闭起来不准其他线程修改等
+2. 线程局部存储（Thread-Local Storage，TLS）：为每个线程存一份自己的变量副本，所以ThreadLocal并不是解决共享对象的同步问题，只是从根本上避免同步问题的产生。
 
 线程本地存储模式本质上是一种避免共享的方案，由于没有共享，所以自然也就没有并发问题。如果你需要在并发场景中使用一个线程不安全的工具类，最简单的方案就是避免共享。
 
 避免共享有两种方案，一种方案是将这个工具类作为局部变量使用，另外一种方案就是线程本地存储模式。这两种方案，局部变量方案的缺点是在高并发场景下会频繁创建对象，而线程本地存储方案，每个线程只需要创建一个工具类的实例，所以不存在频繁创建对象的问题。
 
-# **2.ThreadLocal发展历程**
+# 2. ThreadLocal发展历程
 
-## **2.1 简单实现ThreadLocal**
+## 2.1 简单实现ThreadLocal
 
 在解释ThreadLocal的工作原理之前， 你先自己想想：如果让你来实现ThreadLocal的功能，你会怎么设计呢？
 
@@ -45,7 +47,7 @@ class MyThreadLocal {
 }
 ```
 
-## **2.2 jdk1.8实现**
+## 2.2 jdk1.8实现
 
 ThreadLocal中实现了一个内部类，叫ThreadLocalMap，用来作为对象的存储结构，然而这个存储类的实例并不存在ThreadLocal中，而是在Thread线程类中有一个该类的属性叫threadLocals，所以所有的对象存储都是在线程里，然后ThreadLocal通过某些方式（特定的方法）去对应的Thread里去存对象、取对象、去除对象。
 
@@ -55,14 +57,14 @@ ThreadLocal中实现了一个内部类，叫ThreadLocalMap，用来作为对象�
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/90b1abfc-33bb-45ff-8a09-8f24ee8927e8/image.png)
 
-**这种方式和最初设想的方式对比起来好处在哪？**
+这种方式和最初设想的方式对比起来好处在哪？
 
-1. 在JDK的实现方案里面，ThreadLocal仅仅是一个**代理工具类**，**内部并不持有任何与线程相关的数据**，所有和线程相关的数据都存储在Thread里面，这样的设计容易理解。而从数据的亲缘性上来讲，ThreadLocalMap属于Thread也更加合理。
-2. 当然还有一个更加深层次的原因，那就是**不容易产生内存泄露**。在我们的设计方案中，ThreadLocal持有的Map会持有Thread对象的引用，这就意味着，只要ThreadLocal对象存在，那么Map中的Thread对象就永远不会被回收。ThreadLocal的生命周期往往都比线程要长，所以这种设计方案很容易导致内存泄露。而JDK的实现中Thread持有ThreadLocalMap，而且ThreadLocalMap里对ThreadLocal的引用还是弱引用（WeakReference），所以只要Thread对象可以被回收，那么ThreadLocalMap就能被回收。JDK的这种实现方案虽然看上去复杂一些，但是更加安全。
+1. 在JDK的实现方案里面，ThreadLocal仅仅是一个代理工具类，内部并不持有任何与线程相关的数据，所有和线程相关的数据都存储在Thread里面，这样的设计容易理解。而从数据的亲缘性上来讲，ThreadLocalMap属于Thread也更加合理。
+2. 当然还有一个更加深层次的原因，那就是不容易产生内存泄露。在我们的设计方案中，ThreadLocal持有的Map会持有Thread对象的引用，这就意味着，只要ThreadLocal对象存在，那么Map中的Thread对象就永远不会被回收。ThreadLocal的生命周期往往都比线程要长，所以这种设计方案很容易导致内存泄露。而JDK的实现中Thread持有ThreadLocalMap，而且ThreadLocalMap里对ThreadLocal的引用还是弱引用（WeakReference），所以只要Thread对象可以被回收，那么ThreadLocalMap就能被回收。JDK的这种实现方案虽然看上去复杂一些，但是更加安全。
 
-# **3.ThreadLocal原理分析**
+# 3.ThreadLocal原理分析
 
-## **3.1ThreadLocal与内存泄露**
+## 3.1ThreadLocal与内存泄露
 
 ThreadLocal中的get()方法，封装了针对currentThread.ThreadLocalMap的get操作：
 
@@ -107,13 +109,13 @@ public void remove() {
  }
 ```
 
-### **3.1.1ThreadLocalMap的getEntry()实现**
+### 3.1.1ThreadLocalMap的getEntry()实现
 
 ThreadLocalMap的属性比较少，只有4个属性：
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/71f7204d-9cb1-434a-b1df-f2eee5a11d22/image.png)
 
-**Entry**
+Entry
 
 Entry是ThreadLocalMap里实现的一个内部类，用来存放对象，一个Entry存放一个对象。这个类继承了WeakReference<ThreadLocal<?>>，然后有一个属性是Object，用来保存对象【线程本地存储的值】。
 
@@ -125,7 +127,7 @@ Entry是ThreadLocalMap里实现的一个内部类，用来存放对象，一个E
 
 这里继承弱引用类的作用是，若是ThreadLocal对象本身不被程序用到了（即没有强引用指向它了），那就算该ThreadLocal还作为某些线程里ThreadLocalMap的key，也会被回收掉，之后就能通过一系列依据于此的操作来防止内存泄漏。
 
-**ThreadLocalMap的存储策略**
+ThreadLocalMap的存储策略
 
 ThreadLocalMap的存储由一个Entry数组搞定。因为ThreadLocalMap没有设置一个loadfactor变量，所以在设置阈值的时候是写死的等于长度的2/3。
 
@@ -143,7 +145,7 @@ ThreadLocalMap的构造函数是default的，所以并不允许开发人员自�
 
 4.设置好size、阈值；
 
-**ThreadLocalMap中的getEntry**
+ThreadLocalMap中的getEntry
 
 通过key去获取ThreadLocalMap里的对象的方法是getEntry，大致流程为：
 
@@ -153,7 +155,7 @@ ThreadLocalMap的构造函数是default的，所以并不允许开发人员自�
 2. 获取到该位置对应的对象，如果不为null且该对象的key等于参数的key，则直接返回该对象
 3. 如果为null或者key不相等，则调用getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e)方法来获取对应的Entry
 
-**getEntryAfterMiss**方法干了以下事情：
+getEntryAfterMiss方法干了以下事情：
 
 传入getEntryAfterMiss的参数：作为key的ThreadLocal，通过key的hashCode计算出的数组下标i，通过下标i获得的<ThreadLocal,value>entry对 e
 
@@ -184,7 +186,7 @@ expungeStaleEntry方法就是为了解决内存泄漏存在的。从map中删掉
 
 ThreadLocalMap中的entry其实是继承的弱引用，如果该弱引用指向的ThreadLocal没有在外部被强引用指向的话，在下次gc的时候就会被回收，那这样的话就会出现ThreadLocalMap中存在key为null的情况，这样的数据对于map来讲是脏数据，这样的脏数据没有用，却一直占用着map的存储空间，这其实就是一种内存泄漏，所以需要来释放掉这些空间。
 
-### **3.1.2ThreadLocalMap中的set()实现**
+### 3.1.2ThreadLocalMap中的set()实现
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/c691a956-058f-4940-8c69-f2522c16377b/image.png)
 
@@ -196,7 +198,7 @@ ThreadLocalMap中的entry其实是继承的弱引用，如果该弱引用指向�
 3. size++，然后运行cleanSomeSlots方法专门清除一些key为null的脏数据，（下面详细讲cleanSomeSlots方法）。
 4. 如果没有清除一个脏数据并且size已经超过阈值threshold，则调用rehash()方法重新调整大小
 
-### **3.1.3ThreadLocalMap中的remove()实现**
+### 3.1.3ThreadLocalMap中的remove()实现
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/925a6b55-d976-4b5d-aa42-155f82c9382b/image.png)
 
@@ -204,9 +206,9 @@ ThreadLocalMap中的entry其实是继承的弱引用，如果该弱引用指向�
 
 如果不是则往后找key相同的然后调用clear方法，然后再调用expungeStaleEntry方法来清空脏数据（包括clear完的entry）
 
-### **3.1.4 ThreadLocal中的key是强弱引用与内存泄露**
+### 3.1.4 ThreadLocal中的key是强弱引用与内存泄露
 
-**问题一：假设ThreadLocalMap中的key使用了强引用, 那么会出现内存泄漏吗?**
+问题一：假设ThreadLocalMap中的key使用了强引用, 那么会出现内存泄漏吗?
 
 1. 假设在业务代码中使用完ThreadLocal, ThreadLocal ref被回收了
 2. 但是因为threadLocalMap的Entry强引用了threadLocal, 造成ThreadLocal无法被回收
@@ -214,7 +216,7 @@ ThreadLocalMap中的entry其实是继承的弱引用，如果该弱引用指向�
 
 也就是说: ThreadLocalMap中的key使用了强引用, 是无法完全避免内存泄漏的
 
-**问题二：假设ThreadLocalMap中的key使用了弱引用, 那么会出现内存泄漏吗?**
+问题二：假设ThreadLocalMap中的key使用了弱引用, 那么会出现内存泄漏吗?
 
 1. 假设在业务代码中使用完ThreadLocal, ThreadLocal ref被回收了
 2. 由于threadLocalMap只持有ThreadLocal的弱引用, 没有任何强引用指向threadlocal实例, 所以threadlocal就可以顺利被gc回收, 此时Entry中的key = null
@@ -222,14 +224,14 @@ ThreadLocalMap中的entry其实是继承的弱引用，如果该弱引用指向�
 
 也就是说: ThreadLocalMap中的key使用了弱引用, 也有可能内存泄漏。
 
-**重点：内存泄漏的真实原因**
+重点：内存泄漏的真实原因
 
 比较以上两种情况,我们就会发现:
 
 内存泄漏的发生跟 ThreadLocalIMap 中的 key 是否使用弱引用是没有关系的。那么内存泄漏的的真正原因是什么呢？在以上两种内存泄漏的情况中．都有两个前提：
 
-1. **没有手动侧除这个 Entry**
-2. **CurrentThread 依然运行**
+1. 没有手动侧除这个 Entry
+2. CurrentThread 依然运行
 
 第一点很好理解，只要在使用完 ThreadLocal 后，调用其 remove 方法翻除对应的 Entry ，就能避免内存泄漏。
 
@@ -237,9 +239,9 @@ ThreadLocalMap中的entry其实是继承的弱引用，如果该弱引用指向�
 
 综上， ThreadLocal 内存泄漏的根源是：
 
-**由于ThreadLocalMap 的生命周期跟 Thread 一样长，如果没有手动删除对应 key 就会导致内存泄漏。**
+由于ThreadLocalMap 的生命周期跟 Thread 一样长，如果没有手动删除对应 key 就会导致内存泄漏。
 
-**问题：既然ThreadLocalMap中对ThreadLocal使用哪种引用都无法避免内存泄漏，那为什么还要使用弱引用呢?**
+问题：既然ThreadLocalMap中对ThreadLocal使用哪种引用都无法避免内存泄漏，那为什么还要使用弱引用呢?
 
 要避免内存泄漏有两种方式：
 
@@ -254,13 +256,13 @@ ThreadLocalMap中的entry其实是继承的弱引用，如果该弱引用指向�
 
 这就意味着使用完 ThreadLocal , CurrentThread 依然运行的前提下，就算忘记调用 remove 方法，弱引用比强引用可以多一层保障：弱引用的 ThreadLocal 会被回收．对应value在下一次 ThreadLocaIMap 调用 set/get/remove 中的任一方法的时候会被清除，从而避免内存泄漏。
 
-## **3.2 ThreadLocal与数据污染**
+## 3.2 ThreadLocal与数据污染
 
-**由于ThreadLocal的特性是对象与线程挂钩的，那如果在请求中有多线程任务时，在新起的线程中就访问不到对象了。**
+由于ThreadLocal的特性是对象与线程挂钩的，那如果在请求中有多线程任务时，在新起的线程中就访问不到对象了。
 
 主要介绍开发中常接触到的四种ThreadLocal，包括ThreadLocal、InheritableThreadLocal、TransmittableThreadLocal和TransmissibleThreadLocal。会先结合具体的案例来介绍这四种ThreadLocal应该如何使用，以及在使用过程中遇到的数据污染和内存泄露问题。
 
-### **3.2.1 案例1-父子线程变量传递不规范导致的数据污染**
+### 3.2.1 案例1-父子线程变量传递不规范导致的数据污染
 
 本文的第一个案例与存储登录信息有关，在日常开发中需要使用到当前登录用户的信息，最常用的方法是将用户信息当做参数进行层层传递，但这种方法会提升代码复杂度且在调用链过长时容易出错。
 
@@ -292,7 +294,7 @@ public class SubjectUtils {
 }
 ```
 
-**用户的租户信息丢失** 
+用户的租户信息丢失 
 
 在代码片段2中，笔者使用了ThreadPoolTaskExecutor来创建异步线程（子线程），进行日志的操作。
 
@@ -358,7 +360,7 @@ private void offerOperateLog(String jobName, SocialStatusDto socialStatusDto, Ap
 }
 ```
 
-**原因分析：**
+原因分析：
 
 这里会出现偶发性报错：在调用写日志的方法时，提示租户信息无法获取。
 
@@ -423,7 +425,7 @@ private ThreadLocalMap(ThreadLocalMap parentMap) {
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/570cdcd0-1559-4743-ae46-da162e4a08f2/image.png)
 
-**解决方案：**
+解决方案：
 
 解决方法的要点就在init源码里第41行key.childValue(e.value)，我们去InheritableThreadLocal的源码中可以看到，childValue方法是可以重写的（如下图3）。
 
@@ -448,14 +450,14 @@ private static final ThreadLocal<Map<String, Object>> resources = new Inheritabl
 1. Jetty容器中的线程池都是由QueuedThreadPool（下文简称qtp）管理的，qtp线程池中的线程会派生子线程。
 2. ForkJoinPool线程池中的线程也会存在“父”“子”关系。
 
-### **3.2.2  案例2-线程池内复用线程导致的数据污染**
+### 3.2.2  案例2-线程池内复用线程导致的数据污染
 
 通过上面案例1，大家对父子线程之间的数据污染有了初步了解。我们在实际项目使用中，通过线程池创建多个子线程的情况也很多，池化复用线程还会面临另一类数据污染的问题。
 
 我们来看下面这段代码，实现的功能是给多用户发通知。代码的实现为：通过ExecutorService创建一个核心线程数为5的线程池，然后循环给10个用户发送通知。
 
 ```java
-/**
+/
  * demo
  * 线程池中,给不同的用户发送大象消息
  */
@@ -567,11 +569,11 @@ public class ITLErrorTest {
 ----子线程发送大象消息currentUser: User{id=2, name='zhangsan2'}, action: 简历变更请知晓
 ```
 
-**问题：用户收到了本不应该发给自己的通知**
+问题：用户收到了本不应该发给自己的通知
 
 从运行结果中可以看到，程序只是在循环地给前5名用户发送通知，导致这5名用户收到了本应该发给其他用户的通知，与预期不符。
 
-**原因分析：**这里的原因其实跟InheritableThreadLocal的初始化逻辑有关系，**线程池中的核心线程初始化后，InheritableThreadLocal变量信息就不会发生变化。**
+原因分析：这里的原因其实跟InheritableThreadLocal的初始化逻辑有关系，线程池中的核心线程初始化后，InheritableThreadLocal变量信息就不会发生变化。
 
 在示例代码片段4中，线程池只设置了5个核心线程（5个最大线程），这5个线程初始化时，会把父线程中的inheritThreadLocals变量依次设置到子线程的ThreadLocalMap中，前5名用户的通知会正常发送。
 
@@ -583,7 +585,7 @@ public class ITLErrorTest {
 
 TransmittableThreadLocal传值解决方案
 
-**解决方案：**
+解决方案：
 
 笔者采用第一种方案-修饰TtlRunnable，改造完成后，程序运行结果符合预期。具体改造代码如下，主要修改逻辑点为：
 
@@ -592,7 +594,7 @@ TransmittableThreadLocal传值解决方案
 2.修改代码片段第35行代码，用TtlRunnable修饰Runnable。
 
 ```java
-/**
+/
  * demo
  * 线程池中,给不同的用户发送大象消息
  * 修复方案,修饰TtlRunnable
@@ -689,7 +691,7 @@ public class TTLCorrectTest {
 ----子线程发送大象消息currentUser: User{id=9, name='zhangsan9'}, action: 简历变更请知晓
 ```
 
-### **3.2.3 案例3-线程池内复用线程&父子线程变量传递不规范导致的数据污染**
+### 3.2.3 案例3-线程池内复用线程&父子线程变量传递不规范导致的数据污染
 
 该案例是前两个案例的组合，在该案例背景中，笔者既需要使用到线程池的线程复用，又要用到父子线程的信息传递。
 
@@ -827,13 +829,13 @@ public class RewriteTableName extends MySqlOutputVisitor {
 }
 ```
 
-**程序报错，获取不到租户信息**
+程序报错，获取不到租户信息
 
 由于迁移平台的限制，项目中会存在线程池复用线程的场景，因此选择了使用TransmissibleThreadLocal（是我司MTrace团队在TransmittableThreadLocal上做了一层封装），并且因为有案例1的前车之鉴，就很自觉地去重写了childValue 方法。
 
 但是在执行的时候，发生了与“案例1”类似的情况，偶发性报错提示租户信息取不到，同理也是因为如果子线程的执行时间比父线程长，父线程先一步把ThreadLocal的信息清除掉了，导致子线程取不到Threadlocal里的租户信息。
 
-**原因分析：**
+原因分析：
 
 既然笔者已经重写了childValue，为何还是会出这个问题呢？
 
@@ -843,7 +845,7 @@ public class RewriteTableName extends MySqlOutputVisitor {
 
 TransmissibleThreadLocal简介
 
-**解决方案：**
+解决方案：
 
 根据官方文档提示，阿里的TransmittibleThreadLocal提供了重写copy方法的解决方案。
 
@@ -894,14 +896,14 @@ public class SubjectUtils {
 }
 ```
 
-### **3.2.4  案例4-线程池内ThreadLocal未及时清除造成内存泄露**
+### 3.2.4  案例4-线程池内ThreadLocal未及时清除造成内存泄露
 
 在上述案例中有提到，如果Threadlocal不及时清除会造成数据污染，除此之外需要注意的是内存泄露的问题。
 
 笔者模拟一个核心线程数和最大线程数均为6的线程池，且只往ThreadLocal里写数据而不清除，以此来复现内存泄漏场景。代码片段如下：
 
 ```java
-/**
+/
  * ThreadLocal内存泄漏
  */
 public class ThreadLocalMemoryLeakTest {
@@ -932,22 +934,22 @@ public class ThreadLocalMemoryLeakTest {
 }
 ```
 
-**内存一直被占用无法回收**
+内存一直被占用无法回收
 
 通过jconsole命令，图中可以看出一直有30M的内存占用无法被回收，正好对应了线程池中的6个核心线程，每个线程5M。
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/32fe4960-7d30-4c3d-855c-db11e437ccb2/image.png)
 
-**原因分析：**
+原因分析：
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/045716df-2f42-470c-995f-edda582b5fa8/image.png)
 
-如上图所示，由于线程池的线程一直存在，并且线程中ThreadLocalMap存储的Entry向量继承自WeakReference<ThreadLocal<?>>，因此在Entry中的ThreadLocal变量是弱引用，一旦发生GC，ThreadLocal便会被GC回收掉，Entry中的key会变为null；但是**value是强引用**，它不会被回收掉，ThreadLocalMap的内容无法被回收，导致内存泄漏。
+如上图所示，由于线程池的线程一直存在，并且线程中ThreadLocalMap存储的Entry向量继承自WeakReference<ThreadLocal<?>>，因此在Entry中的ThreadLocal变量是弱引用，一旦发生GC，ThreadLocal便会被GC回收掉，Entry中的key会变为null；但是value是强引用，它不会被回收掉，ThreadLocalMap的内容无法被回收，导致内存泄漏。
 
-**解决方案：**
+解决方案：
 
 ```java
-/**
+/
  * ThreadLocal内存泄漏
  */
 public class ThreadLocalMemoryLeakTest {
@@ -984,29 +986,29 @@ public class ThreadLocalMemoryLeakTest {
 
 可以看到，及时清理ThreadLocal后，内存的占用量就变得正常了。
 
-# **4.ThreadLocal使用场景**
+# 4.ThreadLocal使用场景
 
 四种Threadlocal使用注意事项
 
-| **** | **存储方式** | **是否支持上下文传递（父子线程场景）** | **是否支持多线程使用（线程池场景）** | **易用性** | **解决问题/局限性** |
+|  | 存储方式 | 是否支持上下文传递（父子线程场景） | 是否支持多线程使用（线程池场景） | 易用性 | 解决问题/局限性 |
 | --- | --- | --- | --- | --- | --- |
-| 1 | **ThreadLocal** | ❌ | ❌ | 使用简单 | 局限性：信息无法进行上下文传递。 |
-| 2 | **InheritableThreadLocal** | ✔️ | ❌ | 使用简单
+| 1 | ThreadLocal | ❌ | ❌ | 使用简单 | 局限性：信息无法进行上下文传递。 |
+| 2 | InheritableThreadLocal | ✔️ | ❌ | 使用简单
 • 深拷贝需要重写childValue方法。 | 解决问题：ThreadLocal无法跨父子线程，无法支持上下文传递。
 局限性：InheritableThreadLocal无法处理线程池这类场景，由于线程的复用以及线程的信息始终保持线程创建时的threadlocal拷贝，因无法修改而造成信息混乱的问题。 |
-| 3 | **TransmittableThreadLocal**
-**(TransmissibleThreadLocal)** | ✔️ | ✔️ | 有一定的学习成本
+| 3 | TransmittableThreadLocal
+(TransmissibleThreadLocal) | ✔️ | ✔️ | 有一定的学习成本
 • 深拷贝需要重写copy方法。 | 解决问题：InheritableThreadLocal在线程池的场景上，会造成信息混乱的问题。 |
 - 用到 ThreadLocal 的地方，一定要成对 remove，就像开启流之后必须 close 一样，不及时 remove 会出现内存泄漏或数据污染。
 - 严格检查 InheritableThreadLocal 的使用场景，如果确实需要（解决父子线程问题），必须检查重写 childValue 方法。
 
-## **4.1 常用的场景**
+## 4.1 常用的场景
 
 1. 代替参数的显式传递；
 2. 全局存储用户信息；
 3. 解决线程安全问题，如SimpleDateFormat；
 
-## **4.2 慎用的场景**
+## 4.2 慎用的场景
 
 1. 线程池中线程调用使用ThreadLocal。
     
