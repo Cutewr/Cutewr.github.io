@@ -117,13 +117,13 @@ ThreadLocalMap的属性比较少，只有4个属性：
 
 Entry
 
-Entry是ThreadLocalMap里实现的一个内部类，用来存放对象，一个Entry存放一个对象。这个类继承了WeakReference<ThreadLocal<?>>，然后有一个属性是Object，用来保存对象【线程本地存储的值】。
+Entry是ThreadLocalMap里实现的一个内部类，用来存放对象，一个Entry存放一个对象。这个类继承了WeakReference(ThreadLocal<?>)，然后有一个属性是Object，用来保存对象【线程本地存储的值】。
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/0ad10f6b-8a54-42fd-a98e-2800453afdbf/image.png)
 
 然后ThreadLocalMap里有一个Entry的数组，用来存放一系列的数据。从这里可以看出，ThreadLocalMap的key是ThreadLocal，value是对应的对象。
 
-继承的WeakReference<ThreadLocal>是java提供的一个弱引用类，弱引用是指，若是一个对象只有弱引用指向它时，在下次gc时，该对象会被回收掉。
+继承的WeakReference(ThreadLocal)是java提供的一个弱引用类，弱引用是指，若是一个对象只有弱引用指向它时，在下次gc时，该对象会被回收掉。
 
 这里继承弱引用类的作用是，若是ThreadLocal对象本身不被程序用到了（即没有强引用指向它了），那就算该ThreadLocal还作为某些线程里ThreadLocalMap的key，也会被回收掉，之后就能通过一系列依据于此的操作来防止内存泄漏。
 
@@ -944,7 +944,7 @@ public class ThreadLocalMemoryLeakTest {
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/3e894961-3173-4702-91a3-da175d94f68d/045716df-2f42-470c-995f-edda582b5fa8/image.png)
 
-如上图所示，由于线程池的线程一直存在，并且线程中ThreadLocalMap存储的Entry向量继承自WeakReference<ThreadLocal<?>>，因此在Entry中的ThreadLocal变量是弱引用，一旦发生GC，ThreadLocal便会被GC回收掉，Entry中的key会变为null；但是value是强引用，它不会被回收掉，ThreadLocalMap的内容无法被回收，导致内存泄漏。
+如上图所示，由于线程池的线程一直存在，并且线程中ThreadLocalMap存储的Entry向量继承自WeakReference(ThreadLocal<?>)，因此在Entry中的ThreadLocal变量是弱引用，一旦发生GC，ThreadLocal便会被GC回收掉，Entry中的key会变为null；但是value是强引用，它不会被回收掉，ThreadLocalMap的内容无法被回收，导致内存泄漏。
 
 解决方案：
 
